@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工列表</title>
+    <link rel="stylesheet" th:href="@{/static/css/index_work.css}">
+    <script type="text/javascript" th:src="@{/static/js/vue.js}"></script>
+</head>
+<body>
+
+<table id="dataTable">
+    <tr>
+        <th colspan="6">员工列表</th>
+    </tr>
+    <tr>
+        <th>序号</th>
+        <th>员工姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+        <th>邮箱</th>
+        <th>操作</th>
+    </tr>
+    <tr th:each="employee, status : ${page.list}">
+        <td th:text="${status.count}"></td>
+        <td th:text="${employee.empName}"></td>
+        <td th:text="${employee.age}"></td>
+        <td th:text="${employee.gender}"></td>
+        <td th:text="${employee.email}"></td>
+        <td>
+            <a th:href="@{'/employee/' + ${employee.empId}}" class="deleteC" @click="deleteEmployee">删除</a>
+            <a th:href="@{'/employee/update/' + ${employee.empId}}">修改</a>
+        </td>
+    </tr>
+</table>
+
+<!-- 要想发送的请求是delete请求，必须先 创建一个表单，然后通过表单内的操作将post请求转换为delete请求 -->
+<form id="delete_form" method="post">
+    <input type="hidden" name="_method" value="delete" />
+</form>
+
+<div style="text-align: center;">
+    <a th:if="${page.hasPreviousPage}" th:href="@{/employee/page/1}">首页</a>
+    <a th:if="${page.hasPreviousPage}" th:href="@{'/employee/page/' + ${page.prePage}}">上一页</a>
+    <span th:each="num : ${page.navigatepageNums}">
+        <a th:if="${page.pageNum == num}" style="color: red;" th:href="@{'/employee/page/' + ${num}}" th:text="'【' + ${num} + '】'"></a>
+        <a th:if="${page.pageNum != num}" th:href="@{'/employee/page/' + ${num}}" th:text="${num}"></a>
+    </span>
+    <a th:if="${page.hasNextPage}" th:href="@{'/employee/page/' + ${page.nextPage}}">下一页</a>
+    <a th:if="${page.hasNextPage}" th:href="@{'/employee/page/' + ${page.pages}}">末页</a>
+</div>
+
+<script type="text/javascript">
+    var vue = new Vue({
+        el:"#dataTable",
+        methods:{
+            deleteEmployee:function (event) {
+                //获取一会要真正发送delete请求的表单
+                var delete_form = document.getElementById("delete_form");
+                //让表单的提交事件变成超链接的点击事件
+                delete_form.action = event.target.href;
+                //让表单提交
+                delete_form.submit();
+                //别让超链接生效了，我们已经让表单提交了，所以让超链接失效
+                event.preventDefault();
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

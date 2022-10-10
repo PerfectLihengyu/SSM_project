@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>单个员工信息</title>
+    <link rel="stylesheet" th:href="@{/static/css/index_work.css}">
+</head>
+<body>
+<h1>根据ID查询员工信息</h1>
+<table>
+    <tr>
+        <th colspan="5">员工列表</th>
+    </tr>
+    <tr>
+        <th>序号</th>
+        <th>员工姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+        <th>邮箱</th>
+    </tr>
+    <tr>
+        <td th:text="1"></td>
+        <td th:text="${employee.empName}"></td>
+        <td th:text="${employee.age}"></td>
+        <td th:text="${employee.gender}"></td>
+        <td th:text="${employee.email}"></td>
+    </tr>
+</table>
+</body>
+</html>
